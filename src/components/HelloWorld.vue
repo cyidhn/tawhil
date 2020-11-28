@@ -16,7 +16,7 @@
 				</h2>
 				<v-file-input
 					accept=".txt"
-					label="Importer un fichier texte"
+					label="Your CSV file"
 					color="black"
 					outlined
 					v-model="csvFile"
@@ -44,6 +44,54 @@
 					Next step
 				</v-btn>
 			</v-col>
+			<v-col cols="12" v-if="step3">
+				<h2 class="mb-5 headline font-weight-bold mb-3">
+					Select main text (only one field to select only)
+				</h2>
+				<div v-for="check in checkbox" :key="check.id">
+					<v-checkbox
+						class="mb-1 mt-1 pt-1 pb-1 mt-0 mb-0"
+						color="#FF904D"
+						v-model="check.main"
+						@click="getResults2(check.id)"
+						:label="check.name"
+					></v-checkbox>
+				</div>
+			</v-col>
+			<v-col cols="12" v-if="step4">
+				<h2 class="mb-5 headline font-weight-bold mb-3">
+					Your file is almost ready. In what format do you want to extract it?
+				</h2>
+				<div>
+					<v-btn
+						depressed
+						class="mr-3"
+						color="#FF904D"
+						dark
+						@click="getIramuteq"
+					>
+						Export for Iramuteq
+					</v-btn>
+					<v-btn
+						depressed
+						class="mr-3"
+						color="#FF904D"
+						disabled
+						@click="getIramuteq"
+					>
+						Export in JSON (soon)
+					</v-btn>
+					<v-btn
+						depressed
+						class="mr-3"
+						color="#FF904D"
+						disabled
+						@click="getIramuteq"
+					>
+						Export in XML (soon)
+					</v-btn>
+				</div>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>
@@ -57,11 +105,20 @@
 			step1: true,
 			step2: false,
 			step3: false,
+			step4: false,
 			checkbox: [],
+			idToTextExport: null,
 			count: 0,
 		}),
 
 		methods: {
+			getIramuteq() {},
+			getResults2(theID) {
+				console.log(theID);
+				this.idToTextExport = theID;
+				this.step4 = true;
+				this.step3 = false;
+			},
 			getResults1() {
 				const getCoche = this.checkbox.filter((x) => x.coche).map((x) => x.id);
 
@@ -91,7 +148,12 @@
 					this.data = this.result.data[0];
 					let checking = [];
 					for (let i = 0; i < this.data.length; i++) {
-						checking.push({ id: i, name: this.data[i], coche: false });
+						checking.push({
+							id: i,
+							name: this.data[i],
+							coche: false,
+							main: false,
+						});
 					}
 					this.checkbox = checking;
 					this.step2 = true;
