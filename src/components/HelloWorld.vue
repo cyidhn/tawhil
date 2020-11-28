@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<v-row class="text-left">
-			<v-col cols="12" v-if="!step2">
+			<v-col cols="12" v-if="step1">
 				<div class="mb-12 mt-8">
 					<center>
 						<v-img
@@ -40,10 +40,7 @@
 						:label="check.name"
 					></v-checkbox>
 				</div>
-				<v-btn block color="#FF904D" dark @click="analyseCSV" v-if="csvFile">
-					Next step
-				</v-btn>
-				<v-btn block color="#FF904D" disabled v-else>
+				<v-btn block color="#FF904D" dark @click="getResults1" class="mt-6">
 					Next step
 				</v-btn>
 			</v-col>
@@ -57,6 +54,7 @@
 			csvFile: null,
 			result: null,
 			data: null,
+			step1: true,
 			step2: false,
 			step3: false,
 			checkbox: [],
@@ -64,6 +62,20 @@
 		}),
 
 		methods: {
+			getResults1() {
+				const getCoche = this.checkbox.filter((x) => x.coche).map((x) => x.id);
+
+				console.log(getCoche);
+
+				if (!getCoche.length) {
+					window.alert(
+						"Error, you must select at least one item for analysis."
+					);
+				} else {
+					this.step2 = false;
+					this.step3 = true;
+				}
+			},
 			analyseCSV() {
 				let resultsdata;
 
@@ -83,6 +95,7 @@
 					}
 					this.checkbox = checking;
 					this.step2 = true;
+					this.step1 = false;
 				}, 2000);
 			},
 		},
