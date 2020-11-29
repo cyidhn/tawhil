@@ -127,13 +127,16 @@
 				// Get text
 				let text = "";
 
+				console.log("Stars :");
+				console.log(getCocheStars);
+
 				// Stars & text
-				for (let i = 0; i < getData.length; i++) {
+				for (let i = 1; i < getData.length; i++) {
 					// Element
 					let e1 = getData[i];
 
 					// Stars
-					for (let l = 0; l < getCocheStars; l++) {
+					for (let l = 0; l < getCocheStars.length; l++) {
 						let traitement = e1[getCocheStars[l]];
 						traitement = traitement.replace(" ", "");
 						traitement = traitement.replace("*", "x");
@@ -141,7 +144,9 @@
 						traitement = traitement.replace('"', "");
 						traitement = traitement.replace(",", "");
 						traitement = traitement.replace(";", "");
-						text += `*{${traitement}} `;
+						if (traitement) {
+							text += `*${traitement} `;
+						}
 					}
 
 					// Espacement
