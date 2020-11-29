@@ -112,7 +112,59 @@
 		}),
 
 		methods: {
-			getIramuteq() {},
+			getIramuteq() {
+				// Get elements
+				const getCocheStars = this.checkbox
+					.filter((x) => x.coche)
+					.map((x) => x.id);
+
+				const getCocheMain = this.checkbox
+					.filter((x) => x.main)
+					.map((x) => x.id);
+
+				const getData = this.result.data;
+
+				// Get text
+				let text = "";
+
+				// Stars & text
+				for (let i = 0; i < getData.length; i++) {
+					// Element
+					let e1 = getData[i];
+
+					// Stars
+					for (let l = 0; l < getCocheStars; l++) {
+						let traitement = e1[getCocheStars[l]];
+						traitement = traitement.replace(" ", "");
+						traitement = traitement.replace("*", "x");
+						traitement = traitement.replace("'", "");
+						traitement = traitement.replace('"', "");
+						traitement = traitement.replace(",", "");
+						traitement = traitement.replace(";", "");
+						text += `*{${traitement}} `;
+					}
+
+					// Espacement
+					text += "\n";
+
+					// Text
+					let mainText = e1[getCocheMain[0]];
+					mainText = mainText.replace("*", "x");
+					text += mainText;
+
+					// Espacement
+					text += "\n\n";
+				}
+
+				this.exp(text, "export.txt");
+			},
+			exp(text, file) {
+				let data = new Blob([text], { type: "text/plain" });
+				let link = document.createElement("a");
+				link.href = window.URL.createObjectURL(data);
+				link.download = file;
+				link.click();
+			},
 			getResults2(theID) {
 				console.log(theID);
 				this.idToTextExport = theID;
