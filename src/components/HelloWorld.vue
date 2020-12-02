@@ -118,6 +118,10 @@
 					.filter((x) => x.coche)
 					.map((x) => x.id);
 
+				const getCocheName = this.checkbox
+					.filter((x) => x.coche)
+					.map((x) => x.name);
+
 				const getCocheMain = this.checkbox
 					.filter((x) => x.main)
 					.map((x) => x.id);
@@ -129,6 +133,7 @@
 
 				console.log("Stars :");
 				console.log(getCocheStars);
+				console.log(getCocheName);
 
 				// Stars & text
 				for (let i = 1; i < getData.length; i++) {
@@ -136,16 +141,24 @@
 					let e1 = getData[i];
 
 					// Stars
+					text += "**** ";
 					for (let l = 0; l < getCocheStars.length; l++) {
 						let traitement = e1[getCocheStars[l]];
+						let traitement2 = getCocheName[l];
 						traitement = traitement.replace(" ", "");
 						traitement = traitement.replace("*", "x");
 						traitement = traitement.replace("'", "");
 						traitement = traitement.replace('"', "");
 						traitement = traitement.replace(",", "");
 						traitement = traitement.replace(";", "");
+						traitement2 = traitement2.replace(" ", "");
+						traitement2 = traitement2.replace("*", "x");
+						traitement2 = traitement2.replace("'", "");
+						traitement2 = traitement2.replace('"', "");
+						traitement2 = traitement2.replace(",", "");
+						traitement2 = traitement2.replace(";", "");
 						if (traitement) {
-							text += `*${traitement} `;
+							text += `*${traitement2}_${traitement} `;
 						}
 					}
 
