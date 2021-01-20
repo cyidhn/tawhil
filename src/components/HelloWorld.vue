@@ -24,9 +24,7 @@
 				<v-btn block color="#FF904D" dark @click="analyseCSV" v-if="csvFile">
 					Next step
 				</v-btn>
-				<v-btn block color="#FF904D" disabled v-else>
-					Next step
-				</v-btn>
+				<v-btn block color="#FF904D" disabled v-else> Next step </v-btn>
 			</v-col>
 			<v-col cols="12" v-if="step2">
 				<h2 class="mb-5 headline font-weight-bold mb-3">
@@ -72,23 +70,17 @@
 					>
 						Export for Iramuteq
 					</v-btn>
-					<v-btn
-						depressed
-						class="mr-3"
-						color="#FF904D"
-						disabled
-						@click="getIramuteq"
-					>
-						Export in JSON (soon)
+					<v-btn depressed class="mr-3" color="#FF904D" dark @click="getJson">
+						Export in JSON
 					</v-btn>
 					<v-btn
 						depressed
 						class="mr-3"
 						color="#FF904D"
-						disabled
+						dark
 						@click="getIramuteq"
 					>
-						Export in XML (soon)
+						Export in XML
 					</v-btn>
 				</div>
 			</v-col>
@@ -112,6 +104,32 @@
 		}),
 
 		methods: {
+			getJson() {
+				// Get text
+				const getData = this.result.data;
+				const getTitle = this.data;
+				let text = "[";
+
+				// Stars & text
+				for (let i = 1; i < getData.length; i++) {
+					// Element
+					let e1 = getData[i];
+					let tit = this.data;
+					text += "{";
+
+					for (let l = 0; l < tit.length; l++) {
+						if (l < 1) {
+							tit += `${getTitle[l]}: ${e1[l]}`;
+						} else {
+							tit += `, ${getTitle[l]}: ${e1[l]}`;
+						}
+					}
+
+					text += "}";
+				}
+				text += "]";
+				this.exp(text, "export.json");
+			},
 			getIramuteq() {
 				// Get elements
 				const getCocheStars = this.checkbox
@@ -207,7 +225,7 @@
 				let resultsdata;
 
 				this.$papa.parse(this.csvFile, {
-					complete: function(results) {
+					complete: function (results) {
 						resultsdata = results;
 						console.log(results);
 					},
